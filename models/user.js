@@ -13,6 +13,9 @@ const UserSchema = new mongoose.Schema({
     lastname: {
         type: String
     },
+    displayName: {
+        type: String
+    },
     height: {
         type: Number
     },

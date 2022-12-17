@@ -13,7 +13,7 @@ exports.getData = async (req, res, next) => {
 
 exports.getChart = (req, res, next) => {
     const user = req.query.user
-    activitys.aggregate([{$match:{'username': user } }
+    activitys.aggregate([{$match:{'username': user ,'status':1} }
     ,{$group:{_id: "$activityType",totalscore:{ $sum: 1}}}]).exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
         // console.log('acti',activity)

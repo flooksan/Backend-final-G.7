@@ -6,7 +6,7 @@ const { response } = require('express');
 exports.register = async(req, res)=> {
     try{
         // Check user
-        const { username, password } =req.body
+        const { username, password, firstname, lastname, displayname, height, weight, address, images } =req.body
         let user = await User.findOne({ username })
         if(user){
             return res.status(400).send('User Already exists')
@@ -15,6 +15,13 @@ exports.register = async(req, res)=> {
         user = new User({
             username,
             password,
+            firstname,
+            lastname,
+            displayname,
+            height,
+            weight,
+            address,
+            images
         })
         // Encrypt
         user.password = await bcrypt.hash(password, salt);

@@ -64,31 +64,32 @@ exports.editActivity = (req,res)=> {
     })
 }
 
-// 0=Pending,1 =  Completed , 9 = Incomplete
+
 exports.changeStatus = (req,res)=> {
     const {id} = req.params
     // console.log(id)
     const { status } = req.body
     // console.log(req.body)
-    activitys.findOneAndUpdate({_id: new ObjectId(`${id}`)},{status},{new:true})
+    activitys.findOneAndUpdate({_id: id},{status},{new:true})
     .exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
         res.send(activity)
     })
 }
 
-exports.totalStatus = (req,res)=> {
-    const user = 'sarapao.peetgungunMark@gmail.com' // wait to change
-    const {id} = req.params
-    // console.log(id)
-    const { status } = req.body
-    // console.log(req.body)
-    db.activitys.aggregate([{$match:{'username': user } },{$group:{_id: "$status",totalscore:{ $sum: 1}}}])
+exports.getTotalStatus = (req,res)=> {
+
+    const user = req.query.user // wait to change
+
+    activitys.aggregate([{$match:{'username': user } },{$group:{_id: "$status",totalscore:{ $sum: 1}}}])
     .exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
+        console.log(activity)
         res.send(activity)
     })
 }
+
+// 0=Pending,1 =  Completed , 9 = Incomplete
 
 
 exports.removeOneCard = (req,res) => {

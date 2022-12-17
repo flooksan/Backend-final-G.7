@@ -67,9 +67,8 @@ exports.editActivity = (req,res)=> {
 
 exports.changeStatus = (req,res)=> {
     const {id} = req.params
-    // console.log(id)
+    console.log(id)
     const { status } = req.body
-    // console.log(req.body)
     activitys.findOneAndUpdate({_id: id},{status},{new:true})
     .exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }

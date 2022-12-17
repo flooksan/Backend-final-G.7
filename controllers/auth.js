@@ -31,6 +31,7 @@ exports.login = async (req, res) => {
     try{
         const { username, password } = req.body
         let user = await User.findOneAndUpdate({username},{ new: true })
+        console.log('images',user.images[0].secure_url);
         if(user && user.enabled){
             //check password
             const isMatch = await bcrypt.compare(password, user.password)
@@ -43,6 +44,8 @@ exports.login = async (req, res) => {
             user:{
                 username: user.username,
                 role: user.role,
+                images: user.images[0].secure_url,
+                displayName:user.displayName
             },
            };
             // Generate Token

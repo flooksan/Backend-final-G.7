@@ -1,2 +1,3 @@
 #Ignore nodemudule
 /node_modules
+.env

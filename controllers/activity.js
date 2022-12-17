@@ -1,26 +1,25 @@
 const activitys = require('../models/activity')
 
-// Get
-exports.getData =(req,res)=> {
-    // console.log(req)
-    const user = req.query.user
-    activitys.find({username:user}).exec((err,activity) => {
-        if(err) { res.status(400).json({error:`Error code : ${err}`}) }
-        console.log(activity)
-        res.json(activity)
-    })
-}
+exports.getData = async (req, res, next) => {
+    try {
+      const user = req.query.user;
+      const activity = await activitys.find({ username: user }).exec();
+      res.send(activity);
+    } catch (err) {
+      res.status(400).json({ error: `Error code: ${err}` });
+    }
+    next();
+};
 
-exports.getChart =(req,res)=> {
-    console.log(req.body.username)
-    const user = req.body.username
+exports.getChart = (req, res, next) => {
+    const user = req.query.user
     activitys.aggregate([{$match:{'username': user } }
     ,{$group:{_id: "$activityType",totalscore:{ $sum: 1}}}]).exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
-        console.log(activity)
+        // console.log('acti',activity)
         res.json(activity)
     })
-}
+};
 
 /*
 db.activitys.aggregate([{$match:{'username': 'sarapao.peetgungunMark@gmail.com' } },{$group:{_id: "$activityType",totalscore:{ $sum: 1}}}])
@@ -56,16 +55,16 @@ exports.editActivity = (req,res)=> {
     const {id} = req.params
     // console.log(req.body)
     const { activityName,activityType,startActivity,endActivity,
-        detailActivity,duration } = req.body
-    console.log(req.body)
+        detailActivity,duration,status } = req.body
     activitys.findOneAndUpdate({_id: id},{activityName,activityType,startActivity,endActivity,
-        detailActivity,duration},{new:true})
+        detailActivity,duration,status},{new:true})
     .exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
         res.send(activity)
     })
 }
 
+// 0=Pending,1 =  Completed , 9 = Incomplete
 exports.changeStatus = (req,res)=> {
     const {id} = req.params
     console.log(id)
@@ -79,11 +78,12 @@ exports.changeStatus = (req,res)=> {
 }
 
 exports.totalStatus = (req,res)=> {
+    const user = 'sarapao.peetgungunMark@gmail.com' // wait to change
     const {id} = req.params
     // console.log(id)
     const { status } = req.body
     // console.log(req.body)
-    db.activitys.aggregate([{$match:{'username': 'sarapao.peetgungunMark@gmail.com' } },{$group:{_id: "$status",totalscore:{ $sum: 1}}}])
+    db.activitys.aggregate([{$match:{'username': user } },{$group:{_id: "$status",totalscore:{ $sum: 1}}}])
     .exec((err,activity) => {
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
         res.send(activity)

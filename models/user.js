@@ -7,13 +7,28 @@ const UserSchema = new mongoose.Schema({
     password:{
         type: String
     },
+    firstname: {
+        type: String
+    },
+    lastname: {
+        type: String
+    },
+    height: {
+        type: Number
+    },
+    weight: {
+        type: Number
+    },
     role:{
         type: String,
         default: 'user'
     },
     enabled:{
         type: Boolean,
-        default: false
+        default: true
+    },
+    images:{
+        type: Array
     },
 },
 {timestamps: true}

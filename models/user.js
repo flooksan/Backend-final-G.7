@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
     lastname: {
         type: String
     },
-    displayName: {
+    displayname: {
         type: String
     },
     height: {

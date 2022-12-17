@@ -6,7 +6,7 @@ const { response } = require('express');
 exports.register = async(req, res)=> {
     try{
         // Check user
-        const { username, password } =req.body
+        const { username, password, firstname, lastname, displayname, height, weight, address, images } =req.body
         let user = await User.findOne({ username })
         if(user){
             return res.status(400).send('User Already exists')
@@ -15,6 +15,13 @@ exports.register = async(req, res)=> {
         user = new User({
             username,
             password,
+            firstname,
+            lastname,
+            displayname,
+            height,
+            weight,
+            address,
+            images
         })
         // Encrypt
         user.password = await bcrypt.hash(password, salt);
@@ -31,7 +38,7 @@ exports.login = async (req, res) => {
     try{
         const { username, password } = req.body
         let user = await User.findOneAndUpdate({username},{ new: true })
-        console.log('images',user.images[0].secure_url);
+        // console.log('images',user.images[0].secure_url);
         if(user && user.enabled){
             //check password
             const isMatch = await bcrypt.compare(password, user.password)
@@ -39,13 +46,15 @@ exports.login = async (req, res) => {
            if(!isMatch){
             return res.status(400).send('password mismatch')
            }
+        //    let image =  '';
+        //    user.images[0] ? user.images[0].secure_url :'';
            //payload
            const payload = {
             user:{
                 username: user.username,
                 role: user.role,
-                images: user.images[0].secure_url,
-                displayName:user.displayName
+                images: user.images[0],
+                displayName:user.displayname
             },
            };
             // Generate Token

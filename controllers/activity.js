@@ -3,7 +3,7 @@ const activitys = require('../models/activity')
 exports.getData = async (req, res, next) => {
     try {
       const user = req.query.user;
-      const activity = await activitys.find({ username: user }).exec();
+      const activity = await activitys.find({ username: user }).sort( { createdAt: -1 } ).exec();
       res.send(activity);
     } catch (err) {
       res.status(400).json({ error: `Error code: ${err}` });

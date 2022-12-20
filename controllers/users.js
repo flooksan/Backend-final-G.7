@@ -15,8 +15,8 @@ exports.listUsers = async(req, res)=> {
 
 exports.readUsers = async(req, res)=> {
     try{
-        const id = req.params.id
-        const user = await User.findOne({_id:id}).select('-password').exec()
+        const username = req.params.id
+        const user = await User.findOne({username:username}).select('-password').exec()
         res.send(user)        
     }catch(err){
         console.log(err)

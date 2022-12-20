@@ -1,5 +1,3 @@
-
-
 const cloudinary = require('cloudinary')
 
 cloudinary.config({ 
@@ -19,5 +17,17 @@ exports.createImage = async (req, res) => {
     } catch(err) {
         console.log(err)
         res.status(500).send('Upload Error!')
+    }
+}
+
+exports.removeImage =  async (req, res)=> {
+    try {
+        let image_id = req.body.public_id
+        cloudinary.uploader.destroy(image_id, (result) => {
+            res.send(result)
+        }) 
+    } catch(err) {
+        console.log(err)
+        res.status(500).send('Remove Error!')
     }
 }

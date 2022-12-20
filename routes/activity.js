@@ -8,6 +8,8 @@ router.get('/card-activity',getData)
 router.get('/chart-activity',getChart)
 router.get('/total-status',getTotalStatus)
 router.post('/add-activity',createActivity)
+// router.post('/add-activity',createActivity2)
+
 router.get('/card-activity/:id',getOneCard)
 router.delete('/card-activity/:id',removeOneCard)
 router.put('/edit-activity/:id',editActivity)

@@ -1,10 +1,14 @@
+// const activity = require('../models/activity');
 const activitys = require('../models/activity')
+const User2 = require('../models/user2')
 
 exports.getData = async (req, res, next) => {
     try {
       const user = req.query.user;
       const activity = await activitys.find({ username: user }).sort( { createdAt: -1 } ).exec();
-      res.send(activity);
+      const getChart = await activitys.aggregate([{$match:{'username': user } },{$group:{_id: "$status",totalscore:{ $sum: 1}}}]);
+    //   res.send({activity,getChart});
+    res.send(activity)
     } catch (err) {
       res.status(400).json({ error: `Error code: ${err}` });
     }
@@ -37,9 +41,34 @@ exports.createActivity =(req,res)=> {
         activitys.create({ username,activityName,activityType,startActivity,endActivity,
         detailActivity,status,duration },(err,activity) =>{
         
+       
+
         if(err) { res.status(400).json({error:`Error code : ${err}`}) }
         res.json(activity)
     })
+}
+
+// Create new
+exports.createActivity2 =async (req,res)=> {
+    const id = "63a1713013b5fcfc9bc91abb"
+    const { username,activityName,activityType,startActivity,endActivity,
+        detailActivity,status,duration } = req.body
+    const created = new activitys({
+        username,activityName,activityType,startActivity,endActivity,
+        detailActivity,status,duration,created:id
+    })
+    const user2find = await User2.findById(id)
+    
+    try {
+        await created.save()
+        // เอา line 60 มายัด created ใส่ใน activityList
+        user2find.activityList.push(created)
+        await user2find.save()
+    } catch (err) {
+        console.log(err)
+    }
+
+    res.status(201).json({card:created});
 }
 
 exports.getOneCard = (req,res) => {

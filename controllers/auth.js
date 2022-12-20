@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/user')
+const User2 = require('../models/user2')
 const jwt = require('jsonwebtoken');
 const { response } = require('express');
+const user2 = require('../models/user2');
 // const { currentUser } = require('../../');
 exports.register = async(req, res)=> {
     try{
@@ -12,7 +13,7 @@ exports.register = async(req, res)=> {
             return res.status(400).send('User Already exists')
         }
         const salt = await bcrypt.genSalt(10)
-        user = new User({
+        user = new user2({
             username,
             password,
             firstname,
@@ -21,7 +22,8 @@ exports.register = async(req, res)=> {
             height,
             weight,
             address,
-            images
+            images,
+            activityList:[],
         })
         // Encrypt
         user.password = await bcrypt.hash(password, salt);

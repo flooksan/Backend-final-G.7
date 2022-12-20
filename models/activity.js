@@ -25,6 +25,10 @@ const Activity = new mongoose.Schema({
     }, // 0=Pending,1 =  Completed , 9 = Incomplete
     duration: {
         type:String,
+    },
+    created: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user2'
     }
 },
 {timestamps: true}

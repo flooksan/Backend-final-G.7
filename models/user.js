@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const activitys = require('../models/activity')
 
 const UserSchema = new mongoose.Schema({
     username:{
@@ -33,6 +34,10 @@ const UserSchema = new mongoose.Schema({
     images:{
         type: Array
     },
+    // activityList: {
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:'activitys',
+    // }
 },
 {timestamps: true}
 )

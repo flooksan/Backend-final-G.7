@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema({
     images:{
         type: Array
     },
+    address:{
+        type: String
+    }
+
 },
 {timestamps: true}
 )

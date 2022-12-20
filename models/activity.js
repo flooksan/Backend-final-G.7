@@ -29,4 +29,4 @@ const Activity = new mongoose.Schema({
 },
 {timestamps: true}
 )
-module.exports = User = mongoose.model('activitys', Activity)
+module.exports = mongoose.model('activitys', Activity)

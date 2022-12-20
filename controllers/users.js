@@ -25,6 +25,23 @@ exports.readUsers = async(req, res)=> {
 }
 
 exports.updateUsers = async(req, res)=> {
+    try {
+        // Code
+        var {id, password} = req.body.values
+        // 1 gen salt
+        const salt = await bcrypt.genSalt(10);
+        // 2 encrypt
+        var enPassword = await bcrypt.hash(password, salt);
+    
+        const user = await User.findOneAndUpdate(
+          { _id: id },
+          { password: enPassword }
+        );
+        res.send(user);
+      } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error!");
+      }
  }
 
 exports.removeUsers = async(req, res)=> {

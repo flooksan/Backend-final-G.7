@@ -27,7 +27,7 @@ router.get('/users/:id', readUsers)
 //@Endpoint http://localhost:5000/api/users/:id
 //@Method   PUT
 //@Access   Private
-router.put('/users/:id', updateUsers)
+router.put('/users', updateUsers)
 
 //@Endpoint http://localhost:5000/api/users/:id
 //@Method   DELETE

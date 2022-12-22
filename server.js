@@ -21,7 +21,8 @@ app.use(cors())
 // Route
 app.get('/',(req,res)=> {
     res.send("Backend group 7 ready!!")
-})
+});
+
 readdirSync('./routes')
 .map((r)=> app.use('/api', require('./routes/'+r)))
 
